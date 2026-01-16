@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Vue.js Assessment</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #42b883;
+            margin-bottom: 20px;
+        }
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #42b883;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #42b883;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #3aa876;
+        }
+        .task-list {
+            list-style: none;
+        }
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f9f9f9;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #42b883;
+        }
+        .task-item span {
+            flex: 1;
+        }
+        .delete-btn {
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+        .debug-info {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>Task Manager</h1>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <!-- BUG 1: The input doesn't properly bind to newTask -->
+                <input
+                    type="text"
+                    v-bind:value="newTask"
+                    placeholder="Enter a new task..."
+                >
+
+                <!-- BUG 2: The button click doesn't trigger the addTask method -->
+                <button onclick="addTask()">Add Task</button>
+            </div>
+
+            <!-- Task List -->
+            <ul class="task-list">
+                <!-- BUG 3: The list rendering is missing something important -->
+                <li v-for="task in tasks" class="task-item">
+                    <span>{{ task.name }}</span>
+
+                    <!-- TASK 4: Add a delete button here that removes the task -->
+                    <!-- The button should have class="delete-btn" and text "Delete" -->
+
+                </li>
+            </ul>
+
+            <!-- Empty State -->
+            <p v-if="tasks.length === 0" class="empty-message">
+                No tasks yet. Add one above!
+            </p>
+
+            <!-- Debug Info (helps candidates see what's happening) -->
+            <div class="debug-info">
+                <strong>Debug:</strong> newTask = "{{ newTask }}" | Total tasks: {{ tasks.length }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    newTask: '',
+                    tasks: [
+                        { id: 1, name: 'Learn Vue.js basics' },
+                        { id: 2, name: 'Complete the assessment' }
+                    ]
+                }
+            },
+            methods: {
+                addTask() {
+                    if (this.newTask.trim() === '') {
+                        alert('Please enter a task name')
+                        return
+                    }
+
+                    const newId = this.tasks.length > 0
+                        ? Math.max(...this.tasks.map(t => t.id)) + 1
+                        : 1
+
+                    this.tasks.push({
+                        id: newId,
+                        name: this.newTask.trim()
+                    })
+
+                    this.newTask = ''
+                },
+
+                // TASK 4: Implement the deleteTask method
+                // It should receive a task id and remove that task from the array
+                deleteTask(id) {
+                    // Candidate needs to implement this
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
