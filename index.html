@@ -121,20 +121,21 @@
             <!-- Input Section -->
             <div class="input-section">
                 <!-- BUG 1: The input doesn't properly bind to newTask -->
-                <input type="text" value="newTask" placeholder="Enter a new task...">
+                <input v-model="newTask" type="text" value="newTask" placeholder="Enter a new task...">
 
                 <!-- BUG 2: The button click doesn't trigger the addTask method -->
-                <button onclick="addTask()">Add Task</button>
+                <button @click="addTask">Add Task</button>
             </div>
 
             <!-- Task List -->
             <ul class="task-list">
                 <!-- BUG 3: The list rendering is missing something important -->
-                <li v-for="task in tasks" class="task-item">
+                <li v-for="task in tasks" :key="task.id" class="task-item">
                     <span>{{ task.name }}</span>
 
                     <!-- TASK 4: Add a delete button here that removes the task -->
                     <!-- The button should have class="delete-btn" and text "Delete" -->
+                    <button @click="deleteTask(task.id)" class="delete-btn">Delete</button>
                 </li>
             </ul>
 
@@ -185,7 +186,7 @@
                 // TASK 4: Implement the deleteTask method
                 // It should receive a task id and remove that task from the array
                 deleteTask(id) {
-                    // Your code here
+                    this.tasks.splice(this.tasks.findIndex(t => t.id === id), 1);
                 }
             }
         }).mount('#app')
